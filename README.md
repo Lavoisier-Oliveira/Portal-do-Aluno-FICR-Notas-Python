@@ -6,6 +6,7 @@ Este é um projeto simples que utiliza Selenium e PySimpleGUI para capturar e ex
 
 - Python 3.x instalado
 - Google Chrome instalado
+- Git instalado
 
 ## Como usar
 
