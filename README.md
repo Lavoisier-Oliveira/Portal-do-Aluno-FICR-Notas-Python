@@ -22,7 +22,7 @@ git clone https://github.com/Lavoisier-Oliveira/Scrapping-Notas-Portal-Aluno-FIC
 Navegue até o diretório do projeto e instale as dependências usando o pip:
 
 ```bash
-cd Scrapping-Notas-Portal-Aluno-FICR.git
+cd Scrapping-Notas-Portal-Aluno-FICR
 pip install -r requirements.txt
 ```
 
@@ -31,6 +31,9 @@ Execute o seguinte comando para iniciar o programa:
 ```bash
 python python.py
 ```
+
+## Adquira uma licença do PySimpleGUI
+Acesse o site: https://www.pysimplegui.com/pricing e escolha a opção Hobbyist, para adquirir uma licença gratuita.  
 
 ## Interface do Usuário
 
