@@ -27,8 +27,7 @@ pip install -r requirements.txt
 
 ## Executar o programa
 Execute o seguinte comando para iniciar o programa:
-```
-bash
+```bash
 python python.py
 ```
 
