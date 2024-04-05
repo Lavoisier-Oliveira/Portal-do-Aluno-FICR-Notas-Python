@@ -1,6 +1,6 @@
 # Notas do Aluno - Captura Automática
 
-Este é um projeto simples que utiliza Selenium e PySimpleGUI para capturar e exibir notas acadêmicas de um portal educacional.
+Este é um projeto simples que utiliza Selenium e PySimpleGUI para capturar e exibir notas acadêmicas do portal acadêmico da FICR.
 
 ## Pré-requisitos
 
