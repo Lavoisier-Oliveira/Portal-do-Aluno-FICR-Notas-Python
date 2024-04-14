@@ -39,5 +39,5 @@ Acesse o site: https://www.pysimplegui.com/pricing e escolha a opção Hobbyist,
 
 1. Digite sua matrícula do Portal do Aluno.
 2. Digite sua senha.
-3. Digite o período letivo no formato "####/#" exemplos: 2024/1 e 2022/2.
-Clique no botão "Salvar e Executar", aguarde um pouco e veja a mágica acontecer.
+3. Digite o período letivo no formato "####/#" (exemplos: 2024/1 e 2022/2).<br>
+Clique no botão "Salvar e Executar", aguarde um pouco e suas notas da FICR aparecerem na tela.
