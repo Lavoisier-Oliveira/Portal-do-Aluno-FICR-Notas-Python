@@ -37,7 +37,7 @@ Obs.: você também pode escolher a opção Free Trial caso não queira se regis
 
 ## Interface do Usuário
 
-1. Digite sua matrícula do Portal do Aluno.
-2. Digite sua senha.
+1. Digite a sua matrícula da FICR.
+2. Digite sua senha para entrar no Portal do Aluno FICR.
 3. Digite o período letivo no formato "####/#" (exemplos: 2024/1 e 2022/2).<br>
 Clique no botão "Salvar e Executar", aguarde um pouco e suas notas da FICR aparecerem na tela.
