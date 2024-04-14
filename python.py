@@ -27,6 +27,13 @@ nome_facul = '//*[@id="MYGRID"]/div/div[3]/table/tbody/tr[1]/td[1]/span'
 xpath_tabela = '//*[@id="MYGRID"]/div/div[3]/table'
 div_pai_periodos = '//*[@id="divListaCursos"]'
 
+chrome_options = ChromeOptions()
+chrome_options.add_argument('--start-maximized')
+# Caso queira ver o Selenium em funcionamento, comente a linha de código abaixo.
+chrome_options.add_argument('headless')
+chrome_service = ChromeService(ChromeDriverManager().install())
+nav = webdriver.Chrome(service=chrome_service, options=chrome_options)
+
 def criar_interface():
 	layout = [
 		[sg.Table(values=df2.values.tolist(),
@@ -53,20 +60,22 @@ def atualizar_tabela(janela, dados):
 	janela['table'].update(values=dados)
 
 def capturar_notas(matricula, senha, periodo):
-	chrome_options = ChromeOptions()
-	chrome_options.add_argument('--start-maximized')
-	# Caso queira ver o Selenium em funcionamento, comente a linha de código abaixo.
-	chrome_options.add_argument('headless')
-	chrome_service = ChromeService(ChromeDriverManager().install())
-	nav = webdriver.Chrome(service=chrome_service, options=chrome_options)
-
 	nav.get(url_login)
 
 	WebDriverWait(nav, wait).until(EC.visibility_of_element_located((By.XPATH, campo_login))).send_keys(matricula)
 	nav.find_element(By.XPATH, campo_senha).send_keys(senha)
 	nav.find_element(By.XPATH, botao_entrar).click()
 
-	WebDriverWait(nav, wait).until(EC.visibility_of_element_located((By.XPATH, menu_sanduiche)))
+	while True:
+		try:
+			erro_no_login = nav.find_element(By.ID, "bodyError")
+			if erro_no_login:
+				return None
+		except:		
+			login_certo = WebDriverWait(nav, wait).until(EC.visibility_of_element_located((By.XPATH, menu_sanduiche)))
+			if login_certo:
+				break
+	
 	WebDriverWait(nav, wait).until(EC.invisibility_of_element_located((By.ID, 'loading-screen')))
 	
 	try:
@@ -101,7 +110,6 @@ def capturar_notas(matricula, senha, periodo):
 			dados_linha.append(celula.text)
 
 		dados_tabela.append(dados_linha)
-	nav.quit()
 	df = pd.DataFrame(dados_tabela)
 	df2 = df.iloc[:, 2:9].copy()
 	df2.columns = cabecalho
@@ -118,8 +126,10 @@ while True:
 		periodo = values['periodo']
 
 		df_notas = capturar_notas(matricula, senha, periodo)
-
-		atualizar_tabela(window, df_notas.values.tolist())
+		if df_notas is not None:
+			atualizar_tabela(window, df_notas.values.tolist())
+		else:
+			print("Senha Incorreta")
 
 	if event == sg.WINDOW_CLOSED:
 		break
