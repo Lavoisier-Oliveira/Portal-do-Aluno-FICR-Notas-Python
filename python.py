@@ -13,6 +13,7 @@ url_login = f'{url}login'
 url_notas = f'{url}#/notas'
 cabecalho = ["Disciplina", "Situação", "Média Final", "1ª Avaliação", "2ª Avaliação", "3ª Avaliação", "Prova Final"]
 wait = 60
+nome_aluno = ''
 df2 = pd.DataFrame(columns=cabecalho)
 
 campo_login = '//*[@id="User"]'
@@ -26,16 +27,19 @@ ads_23_2 = '//*[@id="divListaCursos"]/div[2]/div[1]'
 nome_facul = '//*[@id="MYGRID"]/div/div[3]/table/tbody/tr[1]/td[1]/span'
 xpath_tabela = '//*[@id="MYGRID"]/div/div[3]/table'
 div_pai_periodos = '//*[@id="divListaCursos"]'
+nome_aluno_xpath = '//*[@id="desktopHeaderMenu"]/span[1]'
+
 
 chrome_options = ChromeOptions()
 chrome_options.add_argument('--start-maximized')
 # Caso queira ver o Selenium em funcionamento, comente a linha de código abaixo.
-chrome_options.add_argument('headless')
+#chrome_options.add_argument('headless')
 chrome_service = ChromeService(ChromeDriverManager().install())
 nav = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
 def criar_interface():
 	layout = [
+		[sg.Text(f"{nome_aluno}", key='campo_nome_aluno')],
 		[sg.Table(values=df2.values.tolist(),
 				  headings=cabecalho,
 				  auto_size_columns=False,
@@ -56,8 +60,9 @@ def criar_interface():
 	]
 	return sg.Window('Notas do(a) Aluno(a)', layout, size=(900, 400))
 
-def atualizar_tabela(janela, dados):
+def atualizar_tabela(janela, dados, nome_aluno):
 	janela['table'].update(values=dados)
+	janela['campo_nome_aluno'].update(nome_aluno)
 
 def capturar_notas(matricula, senha, periodo):
 	nav.get(url_login)
@@ -100,7 +105,8 @@ def capturar_notas(matricula, senha, periodo):
 	nav.get(url_notas)
 	WebDriverWait(nav, wait).until(EC.visibility_of_element_located((By.XPATH, nome_facul)))
 	tabela = nav.find_element(By.XPATH, xpath_tabela)
-
+	nome_aluno = nav.find_element(By.XPATH, nome_aluno_xpath)
+	nome_aluno = nome_aluno.text
 	dados_tabela = []
 
 	for linha in tabela.find_elements(By.TAG_NAME, "tr"):
@@ -113,7 +119,7 @@ def capturar_notas(matricula, senha, periodo):
 	df = pd.DataFrame(dados_tabela)
 	df2 = df.iloc[:, 2:9].copy()
 	df2.columns = cabecalho
-	return df2
+	return df2, nome_aluno
 
 window = criar_interface()
 
@@ -125,9 +131,9 @@ while True:
 		senha = values['senha']
 		periodo = values['periodo']
 
-		df_notas = capturar_notas(matricula, senha, periodo)
+		df_notas, nome_aluno = capturar_notas(matricula, senha, periodo)
 		if df_notas is not None:
-			atualizar_tabela(window, df_notas.values.tolist())
+			atualizar_tabela(window, df_notas.values.tolist(), nome_aluno)
 		else:
 			print("Senha Incorreta")
 
